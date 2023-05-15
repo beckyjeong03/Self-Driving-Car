@@ -11,8 +11,18 @@ animate();
 
 function animate(){
     car.update();
+
     canvas.height = window.innerHeight;
+
+    ctx.save();
+    // perspective is fixed on the top of the car
+    // translating the canvas
+    ctx.translate(0, -car.y + canvas.height*0.8);
+
+
     road.draw(ctx);
     car.draw(ctx);
+
+    ctx.restore();
     requestAnimationFrame(animate);
 }
