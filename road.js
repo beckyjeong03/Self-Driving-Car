@@ -8,30 +8,57 @@ class Road{
         this.right = x + width/2;
 
         const infinity = 1000000;
+        // road never ends
         this.top = - infinity;
         this.bottom = infinity;
+
+        // boarders
+        const topLeft = {x:this.left, y:this.top};
+        const topRight = {x:this.right, y:this.top};
+        const bottomLeft = {x:this.left, y:this.bottom};
+        const bottomRight = {x:this.right, y:this.bottom};
+
+        this.borders=[
+            [topLeft, bottomLeft],
+            [topRight, bottomRight]
+        ];
+    }
+
+    // puts the car in the center of the lane
+    getLaneCenter(laneIndex){
+        const laneWidth = this.width/this.laneCount;
+ 
+        // CANNNOT HAVE TWO RETURN STATEMENTS IN IF ELSE!! SHOCKERS
+        return this.left + laneWidth/2 + Math.min(laneIndex, this.laneCount - 1)
+        *laneWidth;
     }
 
     draw(ctx){
         ctx.lineWidth = 5;
         ctx.strokeStyle = "white";
 
-        for (let i = 0; i <= this.laneCount; i++){
+        // changes the number of lane depends on the input
+        for (let i = 1; i <= this.laneCount - 1; i++){
             const x = lerp(
                 this.left,
                 this.right,
                 i/this.laneCount
             );
 
-        ctx.beginPath();
-        ctx.moveTo(x, this.top);
-        ctx.lineTo(x, this.bottom);
-        ctx.stroke();
+            ctx.setLineDash([20,20]);
+            ctx.beginPath();
+            ctx.moveTo(x, this.top);
+            ctx.lineTo(x, this.bottom);
+            ctx.stroke();
         }
+        
+        ctx.setLineDash([]);
+        this.borders.forEach(border=>{
+            ctx.beginPath();
+            ctx.moveTo(border[0].x, border[0].y);
+            ctx.lineTo(border[1].x, border[1].y);
+            ctx.stroke();
+        });
        
     }
-}
-
-function lerp(A,B,t){
-    return A+(B-A)*t;
 }
