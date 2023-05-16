@@ -11,11 +11,15 @@ class Car{
         this.friction = 0.05;
         this.angle = 0;
 
+
+        this.sensor = new Sensor(this);
         this.controls = new Controls();
     }
 
     update(){
         this.#move();
+        // updates sensors as well
+        this.sensor.update();
     }
 
     #move(){
@@ -49,10 +53,10 @@ class Car{
          if(this.speed!=0){
             const flip=this.speed>0?1:-1;
             if(this.controls.left){
-                this.angle+=0.03*flip;
+                this.angle+=0.01*flip;
             }
             if(this.controls.right){
-                this.angle-=0.03*flip;
+                this.angle-=0.01*flip;
             }
         }
         
@@ -76,5 +80,8 @@ class Car{
         ctx.fill();
 
         ctx.restore();
+
+        // draws along with cars
+        this.sensor.draw(ctx);
     }
 }
