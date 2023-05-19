@@ -10,18 +10,36 @@ class Car{
         this.maxSpeed = 3;
         this.friction = 0.05;
         this.angle = 0;
-
+        this.damaged=false;
 
         this.sensor = new Sensor(this);
         this.controls = new Controls();
     }
 
     update(roadBorders){
-        this.#move();
-        this.polygon=this.#createPolygon();
+        // if the car hasn't touched the border
+        if(!this.damaged){
+            this.#move();
+            this.polygon=this.#createPolygon();
+
+            // checks if it collied with the border
+            this.damaged=this.#assessDamage(roadBorders);
+            
+        }
         // updates sensors as well
         this.sensor.update(roadBorders);
     }
+
+    #assessDamage(roadBorders){
+        for(let i = 0; i<roadBorders.length; i++){
+            if(polyIntersect(this.polygon,roadBorders[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     #createPolygon(){
         const points=[];
@@ -98,6 +116,13 @@ class Car{
     }
 
     draw(ctx){
+
+        if(this.damaged){
+            ctx.fillStyle="gray";
+
+        }else{
+            ctx.fillStyle="black";
+        }
         ctx.beginPath();
 
         // drawing a rectangle using the four corner points 
