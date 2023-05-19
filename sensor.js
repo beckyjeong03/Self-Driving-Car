@@ -1,10 +1,10 @@
 class Sensor{
     constructor(car){
         this.car = car;
-        this.rayCount = 3;
+        this.rayCount = 5;
         this.rayLength = 100;
         // using Radian, pi/4 is 45 degree angle
-        this.raySpread = Math.PI/4;
+        this.raySpread = Math.PI/2;
 
         this.rays = [];
         this.readings = [];
@@ -85,6 +85,7 @@ class Sensor{
                 this.rays[i][0].x,
                 this.rays[i][0].y
             );
+            // end is the point where the ray intersects
             ctx.lineTo(
                 end.x,
                 end.y
@@ -93,7 +94,7 @@ class Sensor{
 
             ctx.beginPath();
             ctx.lineWidth = 2;
-            ctx.strokeStyle = "yellow";
+            ctx.strokeStyle = "black";
             ctx.moveTo(
                 this.rays[i][1].x,
                 this.rays[i][1].y
