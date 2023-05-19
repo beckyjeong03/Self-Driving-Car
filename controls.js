@@ -4,6 +4,7 @@ class Controls{
         this.left=false;
         this.right=false;
         this.reverse=false;
+        this.shift=false;
 
         this.#addKeyboardListeners();
     }
@@ -23,6 +24,9 @@ class Controls{
                 case "ArrowDown":
                     this.reverse=true;
                     break;
+                case "Shift":
+                    this.shift=true;
+                    break;
             }
             console.table(this);
         }
@@ -40,6 +44,9 @@ class Controls{
                     break;
                 case "ArrowDown":
                     this.reverse=false;
+                    break;
+                case "Shift":
+                    this.shift=false;
                     break;
             }
             console.table(this);
