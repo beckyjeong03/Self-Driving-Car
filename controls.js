@@ -37,7 +37,7 @@ class Controls{
                     this.shift=true;
                     break;
             }
-            console.table(this);
+            //console.table(this);
         }
 
         document.onkeyup=(event)=>{
@@ -58,7 +58,7 @@ class Controls{
                     this.shift=false;
                     break;
             }
-            console.table(this);
+           // console.table(this);
         }
     }
 }

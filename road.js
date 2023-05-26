@@ -45,6 +45,7 @@ class Road{
                 i/this.laneCount
             );
 
+            // dotted line instead of a straight line
             ctx.setLineDash([20,20]);
             ctx.beginPath();
             ctx.moveTo(x, this.top);

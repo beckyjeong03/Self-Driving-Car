@@ -2,7 +2,7 @@ class Sensor{
     constructor(car){
         this.car = car;
         this.rayCount = 5;
-        this.rayLength = 100;
+        this.rayLength = 150;
         // using Radian, pi/4 is 45 degree angle
         this.raySpread = Math.PI/2;
 
