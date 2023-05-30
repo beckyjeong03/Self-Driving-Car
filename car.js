@@ -13,7 +13,7 @@ class Car{
         this.angle = 0;
         this.damaged=false;
 
-        this.useBrain = controlType=="AI";
+        this.useBrain = controlType == "AI";
 
         if(controlType!="DUMMY"){
             this.sensor = new Sensor(this);
@@ -29,44 +29,41 @@ class Car{
         if(!this.damaged){
             this.#move();
             this.polygon=this.#createPolygon();
-            
-            for(let i = 0; i<traffic.length; i++){
-                traffic[i].controls.forward = true;
-            }
+            this.damaged=this.#assessDamage(roadBorders,traffic);
+            // for(let i = 0; i<traffic.length; i++){
+            //     traffic[i].controls.forward = true;
+            // }
 
             // checks if it collied with the border
-            this.damaged=this.#assessDamage(roadBorders, traffic);
+           // this.damaged=this.#assessDamage(roadBorders, traffic);
             
         }
-        if (this.damaged){
-            for(let i = 0; i<traffic.length; i++){
-                traffic[i].controls.forward = false;
-                traffic[i].speed = 0;
-            }
-
+        // if (this.damaged){
+        //     for(let i = 0; i<traffic.length; i++){
+        //         traffic[i].controls.forward = false;
+        //         traffic[i].speed = 0;
+        //     }
             
-        }
+        // }
         // updates sensors as well
-        if(this.sensor) {
-            this.sensor.update(roadBorders, traffic);
-            const offsets = this.sensor.readings.map(
+        if(this.sensor){
+            this.sensor.update(roadBorders,traffic);
+            const offsets=this.sensor.readings.map(
                 s=>s==null?0:1-s.offset
             );
-            const outputs = NeuralNetwork.feedForward(offsets,this.brain);
-            console.log(outputs);
+            const outputs=NeuralNetwork.feedForward(offsets,this.brain);
 
-
-            if (this.useBrain){
-                this.controls.forward = outputs[0];
+            if(this.useBrain){
+                this.controls.forward=outputs[0];
                 this.controls.left=outputs[1];
                 this.controls.right=outputs[2];
-                this.controls.reverse=outputs[3]
-
+                this.controls.reverse=outputs[3];
             }
         }
 
 
     }
+
 
     #assessDamage(roadBorders, traffic){
         for(let i = 0; i<roadBorders.length; i++){
@@ -161,7 +158,7 @@ class Car{
         this.y -= Math.cos(this.angle) * this.speed;
     }
 
-    draw(ctx,color){
+    draw(ctx,color, drawSensor=false){
 
         if(this.damaged){
             ctx.fillStyle="gray";
@@ -174,13 +171,14 @@ class Car{
         // drawing a rectangle using the four corner points 
         // instead of ctx.rect to keep track of the points
         ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
-        for (let i=1; i<this.polygon.length;i++){
-            ctx.lineTo(this.polygon[i].x,this.polygon[i].y);
-
+        for(let i=1; i<this.polygon.length; i++){
+            ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
         }
+
+
         ctx.fill();
         // draws along with cars
-        if (this.sensor){
+        if (this.sensor && drawSensor){
             this.sensor.draw(ctx);
         }
     }
