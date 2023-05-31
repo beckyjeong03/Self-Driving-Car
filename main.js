@@ -10,6 +10,12 @@ const road=new Road(carCanvas.width/2,carCanvas.width*0.9);
 
 const N=100;
 const cars = generateCars(N);
+let bestCar = cars[0];
+if (localStorage.getItem("bestBrain")){
+    bestCar.brain = JSON.parse(
+        localStorage.getItem("bestBrain"));
+    
+}
 
 
 const traffic=[
@@ -29,14 +35,14 @@ const traffic=[
 
 animate();
 
-// function save(){
-//     localStorage.setItem("bestBrain",
-//     JSON.stringify(bestCar.brain));
-// }
+function save(){
+    localStorage.setItem("bestBrain",
+    JSON.stringify(bestCar.brain));
+}
 
-// function discard(){
-//     localStorage.removeItem("bestBrain");
-// }
+function discard(){
+    localStorage.removeItem("bestBrain");
+}
 
 
 
